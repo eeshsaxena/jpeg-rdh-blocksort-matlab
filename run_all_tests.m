@@ -26,9 +26,11 @@ for E = -40:40
             ok = ok && Er == E && hb && tr == t;
         end
     else
+        % |E| ~= 1: E is 0 or |E|>=2, so the marked coefficient is 0 or
+        % |Eh|>=3 -> it must NOT carry a bit (hb false) and must recover.
         Eh = hs_embed_coeff(E, 0);
         [Er, ~, hb] = hs_extract_coeff(Eh);
-        ok = ok && Er == E && (hb == (abs(E) >= 1 && abs(E) <= 2));
+        ok = ok && Er == E && ~hb;
     end
 end
 results(end+1,:) = {ok, 'T1: HS reversible for all coefficient values'};
